@@ -36,8 +36,8 @@ lite_preprocessing: True
 # safeguard settings as a last resort to prevent our base model from OOM
 # a 32G GPU at training time. May be adapted to other GPUs, models and
 # training procedures
-max_num_nodes: 50000
-max_num_edges: 1000000
+max_num_nodes: 5000
+max_num_edges: 100000
 
 # Transforms
 pre_transform: null

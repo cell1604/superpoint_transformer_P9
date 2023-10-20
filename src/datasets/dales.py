@@ -37,9 +37,11 @@ def read_dales_tile(
         tile = PlyData.read(f)
 
         if xyz:
+            print("Extracting XYZ data...")
             data.pos = torch.stack([
                 torch.FloatTensor(tile[key][axis])
                 for axis in ["x", "y", "z"]], dim=-1)
+            print("XYZ data shape:", data.pos.shape)
 
         if intensity:
             # Heuristic to bring the intensity distribution in [0, 1]
@@ -47,11 +49,30 @@ def read_dales_tile(
                 tile[key]['intensity']).clip(min=0, max=60000) / 60000
 
         if semantic:
+            print("Extracting semantic data...")
             y = torch.LongTensor(tile[key]['sem_class'])
             data.y = torch.from_numpy(ID2TRAINID)[y] if remap else y
+            print("Semantic data shape:", data.y.shape)
 
         if instance:
             data.instance = torch.LongTensor(tile[key]['ins_class'])
+
+        # if xyz:
+        #     data.pos = torch.stack([
+        #         torch.FloatTensor(tile[key][axis])
+        #         for axis in ["x", "y", "z"]], dim=-1)
+
+        # if intensity:
+        #     # Heuristic to bring the intensity distribution in [0, 1]
+        #     data.intensity = torch.FloatTensor(
+        #         tile[key]['intensity']).clip(min=0, max=60000) / 60000
+
+        # if semantic:
+        #     y = torch.LongTensor(tile[key]['sem_class'])
+        #     data.y = torch.from_numpy(ID2TRAINID)[y] if remap else y
+
+        # if instance:
+        #     data.instance = torch.LongTensor(tile[key]['ins_class'])
 
     return data
 
@@ -83,11 +104,11 @@ class DALES(BaseDataset):
         want to run in CPU-based DataLoaders
     """
 
-    _form_url = FORM_URL
-    _zip_name = OBJECTS_TAR_NAME
-    _las_name = LAS_TAR_NAME
-    _ply_name = PLY_TAR_NAME
-    _unzip_name = OBJECTS_UNTAR_NAME
+    # _form_url = FORM_URL
+    # _zip_name = OBJECTS_TAR_NAME
+    # _las_name = LAS_TAR_NAME
+    # _ply_name = PLY_TAR_NAME
+    # _unzip_name = OBJECTS_UNTAR_NAME
 
     @property
     def class_names(self):

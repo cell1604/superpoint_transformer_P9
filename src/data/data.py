@@ -568,6 +568,7 @@ class Data(PyGData):
             if k == 'pos':
                 save_tensor(val, f, k, fp_dtype=pos_dtype)
             elif k == 'y' and val.dim() > 1 and y_to_csr:
+#                assert a.sum(dim=1).gt(0).all(), f"Some points in the label histogram `self.y` do not have any labels."
                 sg = f.create_group(osp.join(f.name, '_csr_', k))
                 save_dense_to_csr(val, sg, fp_dtype=fp_dtype)
             elif isinstance(val, Cluster):
